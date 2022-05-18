@@ -68,7 +68,7 @@ div.header > * {
 
 .grid td.dofus {
   background-color: initial;
-  background-image: url("/public/img/dofus.png");
+  background-image: url("./img/dofus.png");
   background-size: cover;
 }
 
@@ -165,7 +165,7 @@ div.header > * {
 
 .icon-star {
   border: none;
-  background-image: url("/public/img/dofus.png");
+  background-image: url("./img/dofus.png");
   background-size: cover;
 }
 

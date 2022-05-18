@@ -83,7 +83,7 @@ function getDictionary(length, dictionary) {
   xhr.open('GET', `./data/partial/${dictionary}${length}.txt`, false);
   xhr.send();
   if (xhr.status === 200) {
-    return xhr.responseText;
+    return xhr.responseText.split('\n').filter(n => n);
   } else {
     console.error('An error has occured while trying to get the dictionary.');
     return '';
