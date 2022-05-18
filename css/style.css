@@ -127,13 +127,15 @@ div.header > * {
 
 .panel {
   position: fixed;
-  width: 50%;
+  max-width: 90%;
+  width: 600px;
   background-color: #444;
   border: 1px solid white;
   top: 10%;
-  left: 25%;
   max-height: 80%;
   overflow-y: scroll;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .panel-content {
