@@ -10,7 +10,7 @@
     "serve": "node dist/server.js",
     "start": "npm run build && npm run copy-files && npm run serve",
     "dev": "nodemon src/server.ts",
-    "copy-files": "copyfiles -u 1 src/public/* dist/",
+    "copy-files": "copyfiles -u 1 src/public/* src/public/**/* dist/",
     "clean": "rimraf dist/"
   },
   "devDependencies": {
