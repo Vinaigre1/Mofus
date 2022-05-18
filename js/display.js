@@ -83,7 +83,7 @@ function loadPanel(data) {
   results.innerHTML += data.results;
 
   if (data.share) {
-    const html = `<div id="share"><span>${data.shareText}</span><img class="share-icon" height="20" src="/public/img/icon-share-64.png" alt="share"></div><span class="share-message">${data.shareMessage}</span>`;
+    const html = `<div id="share"><span>${data.shareText}</span><img class="share-icon" height="20" src="./img/icon-share-64.png" alt="share"></div><span class="share-message">${data.shareMessage}</span>`;
     results.innerHTML += html;
     contentCopy.querySelector('#share').addEventListener('click', () => {
       copyResults(data.shareContent);

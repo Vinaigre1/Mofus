@@ -1,5 +1,5 @@
 # Sufod
-> A Dofus version of Sutom
+> A Dofus version of Wordle
 
 ## License
 
