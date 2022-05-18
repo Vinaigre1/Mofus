@@ -80,7 +80,7 @@ function getWordOfTheDay() {
  */
 function getDictionary(length, dictionary) {
   let xhr = new XMLHttpRequest();
-  xhr.open('GET', `/data/partial/${dictionary}${length}.txt`, false);
+  xhr.open('GET', `./data/partial/${dictionary}${length}.txt`, false);
   xhr.send();
   if (xhr.status === 200) {
     return xhr.responseText;
