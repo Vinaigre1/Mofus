@@ -11,22 +11,20 @@
     <script src="/public/js/display.js"></script>
   </head>
   <body>
-    <div id="content">
-      <div class="header">
-        <!-- <a href="#" class="header-icon" id="config-rules-button">
-          <img src="/public/img/icon-help-48.png" alt="help">
-        </a>
-        <a href="#" class="header-icon" id="config-stats-button">
-          <img src="/public/img/icon-stats-64.png" alt="stats">
-        </a> -->
-        <h1>SUFOD</h1>
-        <!-- <a href="#" class="header-icon" id="config-audio-button">
-          <img src="/public/img/icon-mute-50.png" alt="mute">
-        </a>
-        <a href="#" class="header-icon" id="config-config-button">
-          <img src="/public/img/icon-config-64.png" alt="config">
-        </a> -->
+    <div class="header">
+      <!-- <a href="#" class="header-icon" id="config-audio-button">
+        <img src="/public/img/icon-mute-50.png" alt="mute">
+      </a> -->
+      <div class="header-icon" id="config-stats-button" onclick="loadStatsPanel()">
+        <img src="/public/img/icon-stats-64.png" alt="stats">
       </div>
+      <h1>SUFOD</h1>
+      <div class="header-icon" id="config-rules-button" onclick="loadHelpPanel()">
+        <img src="/public/img/icon-help-48.png" alt="help">
+      </div>
+      <!-- <a href="#" class="header-icon" id="config-config-button">
+        <img src="/public/img/icon-config-64.png" alt="config">
+      </a> -->
     </div>
     <div id="panel" class="panel invisible"></div>
     <div id="panel-template" class="panel-content invisible">
@@ -36,7 +34,6 @@
         <div class="panel-header">
           <p>Vous avez trouvé le mot : <span id="word">placeholder</span></p>
         </div>
-        <hr>
         <div class="panel-results">
           <div class="panel-results-header">
             <p>SUFOD 1 4/6</p>
@@ -49,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div class="content">
       <div id="grid" class="grid"></div>
       <div id="input-area"></div>
     </div>

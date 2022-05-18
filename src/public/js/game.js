@@ -2,7 +2,7 @@ const MAXIMUM_TRIES = 6;
 
 window.addEventListener("load", () => {
   const {word, number} = getWordOfTheDay();
-  // while (word.length != 5) word = getWordOfTheDay();
+  // while (word.length < 3 || word.length > 9) word = getWordOfTheDay();
   if (word === '') {
     console.error('The game cannot be loaded, please try again.');
     return;
@@ -28,6 +28,7 @@ window.addEventListener("load", () => {
   createNewEntry(gameData);
   loadGrid(gameData);
   loadEvents(gameData);
+  loadKeyboard(gameData);
 });
 
 /**
@@ -135,7 +136,7 @@ function removeLetter(gameData) {
 function validateWord(gameData) {
   if (gameData.cursor[1] < gameData.word.length) return;
 
-  const entry = gameData.entries[gameData.cursor[0]].join('');
+  const entry = gameData.entries[gameData.cursor[0]].join('').toLowerCase();
   const check = checkDictionary(gameData, entry);
   if (!check.exists) return;
   gameData.entryDict[gameData.cursor[0]] = check.dofus;
@@ -143,13 +144,15 @@ function validateWord(gameData) {
   gameData.results[gameData.cursor[0]] = checkWord(gameData.word, entry);
   if (gameData.results[gameData.cursor[0]].indexOf(0) === -1 && gameData.results[gameData.cursor[0]].indexOf(1) === -1) {
     gameData.win = true;
-    loadPanel(gameData);
+    loadWinPanel(gameData);
   } else if (gameData.cursor[0] + 1 >= MAXIMUM_TRIES) {
     gameData.lose = true;
-    console.log('Perdu !');
+    loadLosePanel(gameData);
   } else {
     createNewEntry(gameData);
   }
+
+  updateCookie(gameData);
 
   const keyColors = {
     correct: [],
@@ -169,7 +172,7 @@ function validateWord(gameData) {
   }
 
   console.log(keyColors);
-  loadKeyboard(keyColors.correct, keyColors.other, keyColors.wrong);
+  loadKeyboard(gameData, keyColors.correct, keyColors.other, keyColors.wrong);
 
   console.log('entered word is', entry);
 }
@@ -239,8 +242,9 @@ function checkWord(_word, entry) {
 function copyResults(gameData) {
   const icons = [ '⬛', '🟨', '🟩' ];
   const dofus = gameData.entryDict.filter(x => x).length;
+  const length = gameData.win ? gameData.cursor[0] : '-';
 
-  let str = `SUFOD n°${gameData.number}\nMots Dofus : ${dofus}\n\n`;
+  let str = `SUFOD n°${gameData.number} : ${length}/6\nMots Dofus : ${dofus}\n\n`;
   for (let i = 0; i < gameData.results.length; i++) {
     for (let j = 0; j < gameData.results[i].length; j++) {
       str += icons[gameData.results[i][j]];
@@ -259,6 +263,14 @@ function copyResults(gameData) {
   setTimeout(() => {
     messageNode.style.opacity = 0;
   }, 2000);
+}
+
+/**
+ * Update the user cookie with game data
+ * @param {Data} gameData
+ */
+function updateCookie(gameData) {
+
 }
 
 // TODO: iframe integration

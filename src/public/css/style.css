@@ -21,21 +21,31 @@ div.header > * {
   display: inline-block;
 }
 
-a.header-icon img {
+.header-icon {
+  cursor: pointer;
+  user-select: none;
+}
+
+.header-icon img {
   height: 48px;
   filter: invert(100%);
 }
 
-#grid {
-  margin-top: 40px;
+.content {
+  padding-top: 20px;
 }
 
-#grid table {
+.grid {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.grid table {
   border-spacing: 5px;
   margin: 0 auto;
 }
 
-#grid td {
+.grid td {
   width: 40px;
   height: 40px;
   text-align: center;
@@ -44,30 +54,30 @@ a.header-icon img {
   background-color: #555;
 }
 
-#grid td.other {
+.grid td.other {
   background-color: rgb(181, 159, 59);
 }
 
-#grid td.right {
+.grid td.right {
   background-color: rgb(83, 141, 78);
 }
 
-#grid td.padding {
+.grid td.padding {
   visibility: hidden;
 }
 
-#grid td.dofus {
+.grid td.dofus {
   background-color: initial;
   background-image: url("/public/img/dofus.png");
   background-size: cover;
 }
 
-#grid td.cursor {
+.grid td.cursor {
   border: 1px solid white;
   box-sizing: border-box;
 }
 
-#grid td.placeholder {
+.grid td.placeholder {
   color: #aaa;
 }
 
@@ -82,13 +92,14 @@ a.header-icon img {
 .input-letter {
   display: inline-block;
   border: 1px solid #fff;
-  /* border-radius: 10px; */
   width: 40px;
   height: 40px;
   line-height: 40px;
   margin: 5px;
   text-align: center;
   font-size: 20px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .input-letter.correct-letter {
@@ -109,7 +120,10 @@ a.header-icon img {
   width: 50%;
   background-color: #444;
   border: 1px solid white;
+  top: 10%;
   left: 25%;
+  max-height: 80%;
+  overflow-y: scroll;
 }
 
 .panel-content {

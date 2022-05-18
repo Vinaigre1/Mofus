@@ -56,10 +56,10 @@
 }
 
 /**
- * Load the Game Over panel
+ * Load the win panel
  * @param {Data} gameData
  */
-function loadPanel(gameData) {
+function loadWinPanel(gameData) {
   const panel = document.getElementById('panel');
   const template = document.getElementById('panel-template');
   const contentCopy = template.cloneNode(true);
@@ -71,10 +71,10 @@ function loadPanel(gameData) {
   panelTitle.innerHTML = 'Gagné !';
 
   const headerContent = contentCopy.querySelector('.panel-header');
-  headerContent.innerHTML = `<p>Vous avez trouvé le mot : <span id="word">${gameData.word}</span></p>`;
+  headerContent.innerHTML = `<p>Vous avez trouvé le mot : <span id="word">${gameData.word}</span></p><hr>`;
 
   const resultsHeaderContent = contentCopy.querySelector('.panel-results-header');
-  resultsHeaderContent.innerHTML = `<p>SUFOD ${gameData.number} ${gameData.cursor.length}/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`;
+  resultsHeaderContent.innerHTML = `<p>SUFOD n°${gameData.number} : ${gameData.cursor[0]+1}/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`;
 
   const resultsTable = contentCopy.querySelector('.panel-results-table');
   const icons = ['icon-black', 'icon-yellow', 'icon-green'];
@@ -102,3 +102,89 @@ function loadPanel(gameData) {
   panel.innerHTML = '';
   panel.appendChild(contentCopy);
 }
+
+/**
+ * Load the lose panel
+ * @param {Data} gameData
+ */
+ function loadLosePanel(gameData) {
+  const panel = document.getElementById('panel');
+  const template = document.getElementById('panel-template');
+  const contentCopy = template.cloneNode(true);
+
+  contentCopy.id = '';
+  contentCopy.classList.remove('invisible');
+
+  const panelTitle = contentCopy.querySelector('h2');
+  panelTitle.innerHTML = 'Perdu !';
+
+  const headerContent = contentCopy.querySelector('.panel-header');
+  headerContent.innerHTML = `<p>Le mot était : <span id="word">${gameData.word}</span></p><hr>`;
+
+  const resultsHeaderContent = contentCopy.querySelector('.panel-results-header');
+  resultsHeaderContent.innerHTML = `<p>SUFOD n°${gameData.number} : -/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`;
+
+  const resultsTable = contentCopy.querySelector('.panel-results-table');
+  const icons = ['icon-black', 'icon-yellow', 'icon-green'];
+  let html = '';
+  for (let i = 0; i < gameData.results.length; i++) {
+    html += '<tr>';
+    for (let j = 0; j < gameData.results[i].length; j++) {
+      html += `<td class="${icons[gameData.results[i][j]]}"></td>`;
+    }
+    html += `<td class="${gameData.entryDict[i] ? 'icon-star' : ''}"></td>`;
+    html += '</tr>';
+  }
+  resultsTable.innerHTML = html;
+
+  contentCopy.querySelector('#share').addEventListener('click', () => {
+    copyResults(gameData);
+  });
+
+  contentCopy.querySelector('.panel-cross').addEventListener('click', () => {
+    contentCopy.remove();
+    panel.classList.add('invisible');
+  });
+
+  panel.classList.remove('invisible');
+  panel.innerHTML = '';
+  panel.appendChild(contentCopy);
+}
+
+/**
+ * Load the Help panel
+ * @param {Data} gameData
+ */
+ function loadHelpPanel() {
+  const panel = document.getElementById('panel');
+  const template = document.getElementById('panel-template');
+  const contentCopy = template.cloneNode(true);
+
+  contentCopy.id = '';
+  contentCopy.classList.remove('invisible');
+
+  const panelTitle = contentCopy.querySelector('h2');
+  panelTitle.innerHTML = 'Règles du jeu';
+
+  const headerContent = contentCopy.querySelector('.panel-header');
+  headerContent.innerHTML = `<p>Trouvez le mot du jour.<br>Chaque jour, un nouveau mot est à découvrir, c'est le même mot pour tout le monde.</p><p>Vous avez 6 essais pour tenter de trouver le mot secret. Lorsque vous entrez un mot, le jeu indiquera quelles lettres sont présentes.</p><p>Si la lettre est verte, alors elle est à la bonne position. Si elle est jaune alors elle se trouve sur une autre position.</p>`;
+  headerContent.innerHTML += `<hr><p>Le mot secret est un mot apparaissant dans le Monde des Douze. Il peut s'agir du nom d'un monstre, du nom d'un sort de classe ou sort commun, le nom d'une zone, d'une famille de monstre, de trophée, idole et bien plus encore.</p>`;
+
+  const resultsHeaderContent = contentCopy.querySelector('.panel-results-header');
+  resultsHeaderContent.innerHTML = ``;
+
+  const results = contentCopy.querySelector('.panel-results');
+  let html = 'Exemples<table class="grid"><tbody><tr><td class="padding"></td><td class="none">p</td><td class="right">o</td><td class="none">m</td><td class="none">m</td><td class="none">e</td><td class="padding"></td></tr></tbody></table>La lettre <i>O</i> est présente dans le mot à la même position.<table class="grid"><tbody><tr><td class="padding"></td><td class="none">b</td><td class="other">u</td><td class="none">t</td><td class="other">o</td><td class="none">r</td><td class="dofus"></td></tr></tbody></table>Les lettres <i>U</i> et <i>O</i> sont présentes dans le mot mais autre part.<br>L\'icône à droite du mot signifie qu\'il s\'agît d\'un mot du Monde des Douze.<table class="grid"><tbody><tr><td class="padding"></td><td class="right">d</td><td class="right">o</td><td class="right">f</td><td class="right">u</td><td class="right">s</td><td class="dofus"></td></tr></tbody></table>Le mot à trouver sera toujours un mot appartenant au Monde des Douze.';
+  results.innerHTML = html;
+
+  contentCopy.querySelector('.panel-cross').addEventListener('click', () => {
+    contentCopy.remove();
+    panel.classList.add('invisible');
+  });
+
+  panel.classList.remove('invisible');
+  panel.innerHTML = '';
+  panel.appendChild(contentCopy);
+}
+
+
