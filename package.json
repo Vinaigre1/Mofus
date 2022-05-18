@@ -2,12 +2,13 @@
   "name": "sufod",
   "version": "1.0.0",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "npm run lint:check",
+    "lint:check": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "echo 'TODO: Add a test runner and then update this command'",
     "build": "tsc",
     "serve": "node dist/server.js",
-    "start": "npm run serve"
+    "start": "npm run build && npm run serve"
   },
   "devDependencies": {
     "eslint": "^7.19.0"
