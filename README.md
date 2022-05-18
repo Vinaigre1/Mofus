@@ -3,4 +3,4 @@
 
 ## License
 
-Released under [MIT](/LICENSE) by [@oliviersvrn](https://github.com/oliviersvrn).
+Released under [MIT](/LICENSE) by [@Vinaigre1](https://github.com/Vinaigre1).
