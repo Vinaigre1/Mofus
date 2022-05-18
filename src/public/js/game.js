@@ -96,7 +96,7 @@ function createNewEntry(word, entries, cursor) {
  */
 function addLetter(word, entries, cursor, letter) {
   if (cursor[1] >= word.length) return;
-  if (cursor[1] === 0 && letter !== word[0]) cursor[1] = 1;
+  // if (cursor[1] === 0 && letter !== word[0]) cursor[1] = 1;
 
   entries[cursor[0]][cursor[1]] = letter;
   cursor[1]++;
