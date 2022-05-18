@@ -1,48 +1,91 @@
 const MAXIMUM_TRIES = 6;
 
 window.addEventListener("load", () => {
-  const word = 'magouille';
-  let entries = [];
-  let results = [];
-  let cursor = [0, 0];
-  createNewEntry(word, entries, cursor);
-  loadGrid(word, entries, cursor, results);
-  loadEvents(word, entries, cursor, results);
+  const word = getWordOfTheDay();
+  if (word === '') {
+    console.error('The game cannot be loaded, please try again.');
+    return;
+  }
+
+  const gameData = {
+    word,
+    entries: [],
+    results: [],
+    cursor: [0, 0],
+    dictionary: {
+      dofus: getDictionary(word.length, 'dofus'),
+      french: getDictionary(word.length, 'french')
+    }
+  };
+
+  createNewEntry(gameData);
+  loadGrid(gameData);
+  loadEvents(gameData);
 });
 
 /**
- * Loads the grid with every entry and results
- * @param {string} word
- * @param {Array} entries
- * @param {Array} cursor
- * @param {Array} results
+ * Returns the word of the day
+ * @return {string}
  */
-function loadGrid(word, entries, cursor, results) {
+function getWordOfTheDay() {
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', '/wordoftheday', false);
+  xhr.send();
+  if (xhr.status === 200) {
+    return xhr.responseText;
+  } else {
+    console.error('An error has occured while trying to get the word of the day.');
+    return '';
+  }
+}
+
+/**
+ * Returns the list of all words in the dictionary in the given length
+ * @param {number} length
+ * @returns {Array[string]}
+ */
+function getDictionary(length, dictionary) {
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', `/list?length=${length}&dictionary=${dictionary}`, false);
+  xhr.send();
+  if (xhr.status === 200) {
+    return xhr.responseText;
+  } else {
+    console.error('An error has occured while trying to get the word of the day.');
+    return '';
+  }
+}
+
+/**
+ * Loads the grid with every entry and results
+ * @param {Data} gameData
+ */
+function loadGrid(gameData) {
   const gridEl = document.getElementById('grid');
   const tableEl = document.createElement('table');
   const resultClasses = ['none', 'other', 'right'];
 
-  const prefill = Array(word.length);
+  const prefill = Array(gameData.word.length);
   prefill.fill('.');
-  prefill[0] = word[0];
-  for (let i = 0; i < results.length; i++) {
-    for (let j = 0; j < results[i].length; j++) {
-      if (prefill[j] === '.' && results[i][j] === 2) {
-        prefill[j] = entries[i][j];
+  prefill[0] = gameData.word[0];
+  for (let i = 0; i < gameData.results.length; i++) {
+    for (let j = 0; j < gameData.results[i].length; j++) {
+      if (prefill[j] === '.' && gameData.results[i][j] === 2) {
+        prefill[j] = gameData.entries[i][j];
       }
     }
   }
 
   for (let i = 0; i < MAXIMUM_TRIES; i++) {
     const trEl = document.createElement('tr');
-    let line = entries[i];
-    if (i === cursor[0] && cursor[1] === 0) {
+    let line = gameData.entries[i];
+    if (i === gameData.cursor[0] && gameData.cursor[1] === 0) {
       line = prefill;
     }
-    for (let j = 0; j < word.length; j++) {
+    for (let j = 0; j < gameData.word.length; j++) {
       const tdEl = document.createElement('td');
-      tdEl.textContent = line && line[j] || (i == cursor[0] ? '.' : '');
-      tdEl.classList.add(resultClasses[results[i] && results[i][j] || 0]);
+      tdEl.textContent = line && line[j] || (i == gameData.cursor[0] ? '.' : '');
+      tdEl.classList.add(resultClasses[gameData.results[i] && gameData.results[i][j] || 0]);
       trEl.appendChild(tdEl);
     }
     tableEl.appendChild(trEl);
@@ -53,103 +96,90 @@ function loadGrid(word, entries, cursor, results) {
 /**
  * Creates an event listener that runs a function depending on which key is pressed.
  * Possible functions are: Add letter, Remove letter, Validate word
- * @param {string} word
- * @param {Array} entries
- * @param {Array} cursor
- * @param {Array} results
+ * @param {Data} gameData
  */
-function loadEvents(word, entries, cursor, results) {
+function loadEvents(gameData) {
   const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   document.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
     if (keys.indexOf(key) >= 0) {
-      addLetter(word, entries, cursor, key);
+      addLetter(gameData, key);
     } else if (key === 'backspace') {
-      removeLetter(word, entries, cursor);
+      removeLetter(gameData);
     } else if (key === 'enter') {
-      validateWord(word, entries, cursor, results);
+      validateWord(gameData);
     }
-    loadGrid(word, entries, cursor, results);
+    loadGrid(gameData);
   });
 }
 
 /**
  * Starts a new entry and moves the cursor on this new entry
- * @param {string} word
- * @param {Array} entries
- * @param {Array} cursor
+ * @param {Data} gameData
  */
-function createNewEntry(word, entries, cursor) {
-  let entry = Array(word.length);
-  entry[0] = word[0];
-  entries.push(entry);
-  cursor[0] = entries.length - 1;
-  cursor[1] = 0;
+function createNewEntry(gameData) {
+  let entry = Array(gameData.word.length);
+  entry[0] = gameData.word[0];
+  gameData.entries.push(entry);
+  gameData.cursor[0] = gameData.entries.length - 1;
+  gameData.cursor[1] = 0;
 }
 
 /**
  * Adds a letter in the entry and moves the cursor
- * @param {string} word
- * @param {Array} entries
- * @param {Array} cursor
+ * @param {Data} gameData
  * @param {string} letter
  */
-function addLetter(word, entries, cursor, letter) {
-  if (cursor[1] >= word.length) return;
+function addLetter(gameData, letter) {
+  if (gameData.cursor[1] >= gameData.word.length) return;
   // if (cursor[1] === 0 && letter !== word[0]) cursor[1] = 1;
 
-  entries[cursor[0]][cursor[1]] = letter;
-  cursor[1]++;
+  gameData.entries[gameData.cursor[0]][gameData.cursor[1]] = letter;
+  gameData.cursor[1]++;
 }
 
 /**
  * Removes a letter from the entries and moves the cursor
- * @param {string} word
- * @param {Array} entries
- * @param {Array} cursor
- * @returns 
+ * @param {Data} gameData
  */
-function removeLetter(word, entries, cursor) {
-  if (cursor[1] <= 0) return;
-  cursor[1]--;
+function removeLetter(gameData) {
+  if (gameData.cursor[1] <= 0) return;
+  gameData.cursor[1]--;
 
-  if (cursor[1] > 0) {
-    entries[cursor[0]][cursor[1]] = '';
+  if (gameData.cursor[1] > 0) {
+    gameData.entries[gameData.cursor[0]][gameData.cursor[1]] = '';
   }
 }
 
 /**
  * Checks the entered word and makes an action depending on the result
- * @param {string} word
- * @param {Array} entries
- * @param {Array} cursor
- * @param {Array} results
+ * @param {Data} gameData
  */
-function validateWord(word, entries, cursor, results) {
-  if (cursor[1] < word.length) return;
+function validateWord(gameData) {
+  if (gameData.cursor[1] < gameData.word.length) return;
 
-  const entry = entries[cursor[0]].join('');
-  if (!wordExists(entry)) return;
+  const entry = gameData.entries[gameData.cursor[0]].join('');
+  if (!wordExists(gameData, entry)) return;
 
-  results[cursor[0]] = checkWord(word, entry);
-  if (results[cursor[0]].indexOf(0) === -1 && results[cursor[0]].indexOf(1) === -1) {
+  gameData.results[gameData.cursor[0]] = checkWord(gameData.word, entry);
+  if (gameData.results[gameData.cursor[0]].indexOf(0) === -1 && gameData.results[gameData.cursor[0]].indexOf(1) === -1) {
     console.log('Gagné !');
-  } else if (cursor[0] + 1 >= MAXIMUM_TRIES) {
+  } else if (gameData.cursor[0] + 1 >= MAXIMUM_TRIES) {
     console.log('Perdu !');
   } else {
-    createNewEntry(word, entries, cursor);
+    createNewEntry(gameData);
   }
 
   const keyColors = {
     correct: [],
     other: []
   };
-  for (let i = 0; i < results.length; i++) {
-    for (let j = 0; j < results[i].length; j++) {
-      if (results[i][j] === 1) {
-        keyColors.other.push(entries[i][j].toUpperCase());
-      } else if (results[i][j] === 2) {
-        keyColors.correct.push(entries[i][j].toUpperCase());
+  for (let i = 0; i < gameData.results.length; i++) {
+    for (let j = 0; j < gameData.results[i].length; j++) {
+      if (gameData.results[i][j] === 1) {
+        keyColors.other.push(gameData.entries[i][j].toUpperCase());
+      } else if (gameData.results[i][j] === 2) {
+        keyColors.correct.push(gameData.entries[i][j].toUpperCase());
       }
     }
   }
@@ -165,10 +195,10 @@ function validateWord(word, entries, cursor, results) {
  * @param {string} entry
  * @returns {boolean}
  */
-function wordExists(entry) {
-  // TODO
-  entry;
-  return true;
+function wordExists(gameData, entry) {
+  if (gameData.dictionary.dofus.includes(entry)) return true;
+  if (gameData.dictionary.french.includes(entry)) return true;
+  return false;
 }
 
 /**
