@@ -40,7 +40,7 @@ function getWordOfTheDay() {
     return (treatAsUTC(endDate).getTime() - treatAsUTC(startDate).getTime()) / (24 * 60 * 60 * 1000);
   }
 
-  const startDate = new Date(2022, 5);
+  const startDate = new Date(2022, 4, 20);
   const num = Math.floor(daysBetween(startDate, new Date()));
   const date = new Date();
   const month = date.getMonth() + 1;
@@ -272,7 +272,7 @@ function copyResults(gameData) {
     str += '\n';
   }
   str += '\n';
-  str += window.location.origin;
+  str += window.location.href;
 
   const messageNode = document.querySelector('.share-message')
   if (!navigator.clipboard) {
@@ -319,15 +319,19 @@ function updateGame(gameData) {
  */
 function updateStats(gameData) {
   const stats = JSON.parse(localStorage.getItem('stats')) || {
-    '1': 0,
-    '2': 0,
-    '3': 0,
-    '4': 0,
-    '5': 0,
-    '6': 0,
-    '-': 0,
+    'results': {
+      '1': 0,
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
+      '6': 0,
+      '-': 0
+    },
     'streak': 0,
-    'maxStreak': 0
+    'maxStreak': 0,
+    'normalWords': 0,
+    'dofusWords': 0
   };
   const game = JSON.parse(localStorage.getItem('game')) || {
     'date': new Date().getTime(),
@@ -339,15 +343,17 @@ function updateStats(gameData) {
   if (game.state !== 'in_progress') return;
 
   if (numberOfTries >= 1 && numberOfTries <= 6) {
-    stats[numberOfTries]++;
+    stats.results[numberOfTries]++;
     stats.streak++;
     game.state = 'win';
   } else {
-    stats['-']++;
+    stats.results['-']++;
     stats.streak = 0;
     game.state = 'lose';
   }
   stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
+  stats.normalWords += gameData.entryDict.filter(n => false).length;
+  stats.dofusWords += gameData.entryDict.filter(n => true).length;
 
   game.words.push(gameData.entries[gameData.cursor[0]].join(''));
 
@@ -361,7 +367,17 @@ function updateStats(gameData) {
  */
 function loadGame(gameData) {
   const game = JSON.parse(localStorage.getItem('game'));
-  if (!game) return;
+  if (!game) {
+    localStorage.setItem('game', JSON.stringify(
+      {
+        'date': new Date().getTime(),
+        'words': [],
+        'state': 'in_progress'
+      }
+    ));
+    loadHelpPanel();
+    return;
+  }
 
   const start = new Date();
   start.setHours(0,0,0,0);
@@ -383,6 +399,43 @@ function loadGame(gameData) {
     }
   }
   loadGrid(gameData);
+}
+
+/**
+ * Return the stats of the user using localStorage infos
+ * @return {Object}
+ */
+function getAllStats() {
+  const storedStats = JSON.parse(localStorage.getItem('stats'));
+  if (!storedStats) return;
+
+  const totalGames = Object.keys(storedStats.results).reduce((pre, key) => Number(pre) + storedStats.results[key]);
+
+  return {
+    games: totalGames,
+    results: {
+      fixed: storedStats.results,
+      ratios: {
+        '1': storedStats.results['1'] / totalGames,
+        '2': storedStats.results['2'] / totalGames,
+        '3': storedStats.results['3'] / totalGames,
+        '4': storedStats.results['4'] / totalGames,
+        '5': storedStats.results['5'] / totalGames,
+        '6': storedStats.results['6'] / totalGames,
+        '-': storedStats.results['-'] / totalGames
+      }
+    },
+    words: {
+      total: storedStats.normalWords + storedStats.dofusWords,
+      dofus: storedStats.dofusWords,
+      normal: storedStats.normalWords,
+      ratio: storedStats.dofusWords / (storedStats.normalWords + storedStats.dofusWords)
+    },
+    streak: {
+      current: storedStats.streak,
+      max: storedStats.maxStreak
+    }
+  };
 }
 
 // TODO: iframe integration

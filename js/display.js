@@ -2,7 +2,7 @@
  * Loads the grid with every entry and results
  * @param {Data} gameData
  */
- function loadGrid(gameData) {
+function loadGrid(gameData) {
   const gridEl = document.getElementById('grid');
   const tableEl = document.createElement('table');
   const resultClasses = ['none', 'other', 'right'];
@@ -119,8 +119,8 @@ function loadWinPanel(gameData) {
 
   loadPanel({
     title: 'Gagné !',
-    header: `<p>Vous avez trouvé le mot : <span id="word">${gameData.word}</span></p><hr>`,
-    results: '',
+    header: `<p>Vous avez trouvé le mot : <span id="word">${gameData.word.toUpperCase()}</span></p><hr>`,
+    results: getStatsHTML(),
     resultsHeader: `<p>SUFOD n°${gameData.number} : ${gameData.cursor[0]+1}/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`,
     resultsTable: html,
     share: true,
@@ -134,7 +134,7 @@ function loadWinPanel(gameData) {
  * Load the lose panel
  * @param {Data} gameData
  */
- function loadLosePanel(gameData) {
+function loadLosePanel(gameData) {
   const icons = ['icon-black', 'icon-yellow', 'icon-green'];
   let html = '';
   for (let i = 0; i < gameData.results.length; i++) {
@@ -149,7 +149,7 @@ function loadWinPanel(gameData) {
   loadPanel({
     title: 'Perdu !',
     header: `<p>Le mot était : <span id="word">${gameData.word}</span></p><hr>`,
-    results: '',
+    results: getStatsHTML(),
     resultsHeader: `<p>SUFOD n°${gameData.number} : -/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`,
     resultsTable: html,
     share: true,
@@ -163,13 +163,18 @@ function loadWinPanel(gameData) {
  * Load the Help panel
  * @param {Data} gameData
  */
- function loadHelpPanel() {
+function loadHelpPanel() {
   loadPanel({
     title: 'Règles du jeu',
-    header: `<p>Trouvez le mot du jour.<br>Chaque jour, un nouveau mot est à découvrir, c'est le même mot pour tout le monde.</p><p>Vous avez 6 essais pour tenter de trouver le mot secret. Lorsque vous entrez un mot, le jeu indiquera quelles lettres sont présentes.</p><p>Si la lettre est verte, alors elle est à la bonne position. Si elle est jaune alors elle se trouve sur une autre position.</p><hr><p>Le mot secret est un mot apparaissant dans le Monde des Douze. Il peut s'agir du nom d'un monstre, du nom d'un sort de classe ou sort commun, le nom d'une zone, d'une famille de monstre, de trophée, idole et bien plus encore.</p>`,
-    results: 'Exemples<table class="grid"><tbody><tr><td class="padding"></td><td class="none">p</td><td class="right">o</td><td class="none">m</td><td class="none">m</td><td class="none">e</td><td class="padding"></td></tr></tbody></table>La lettre <i>O</i> est présente dans le mot à la même position.<table class="grid"><tbody><tr><td class="padding"></td><td class="none">b</td><td class="other">u</td><td class="none">t</td><td class="other">o</td><td class="none">r</td><td class="dofus"></td></tr></tbody></table>Les lettres <i>U</i> et <i>O</i> sont présentes dans le mot mais autre part.<br>L\'icône à droite du mot signifie qu\'il s\'agît d\'un mot du Monde des Douze.<table class="grid"><tbody><tr><td class="padding"></td><td class="right">d</td><td class="right">o</td><td class="right">f</td><td class="right">u</td><td class="right">s</td><td class="dofus"></td></tr></tbody></table>Le mot à trouver sera toujours un mot appartenant au Monde des Douze.',
+    header: `<p>Trouvez le mot du jour.<br>Chaque jour, un nouveau mot est à découvrir, c'est le même mot pour tout le monde.</p><p>Vous avez 6 essais pour tenter de trouver le mot secret. Lorsque vous entrez un mot, le jeu indiquera quelles lettres sont présentes.</p><p>Si la lettre est verte, alors elle est à la bonne position. Si elle est jaune alors elle se trouve sur une autre position.</p><hr><p>Le mot secret est un mot apparaissant dans l'univers de Dofus. Il peut s'agir du nom d'un monstre, du nom d'un sort de classe ou sort commun, le nom d'une zone, d'une famille de monstre, de trophée, idole et bien plus encore.</p>`,
+    results: 'Exemples<table class="grid"><tbody><tr><td class="padding"></td><td class="none">p</td><td class="right">o</td><td class="none">m</td><td class="none">m</td><td class="none">e</td><td class="padding"></td></tr></tbody></table>La lettre <i>O</i> est présente dans le mot à la même position.<table class="grid"><tbody><tr><td class="padding"></td><td class="none">b</td><td class="other">u</td><td class="none">t</td><td class="other">o</td><td class="none">r</td><td class="dofus"></td></tr></tbody></table>Les lettres <i>U</i> et <i>O</i> sont présentes dans le mot mais autre part.<br>L\'icône à droite du mot signifie qu\'il s\'agît d\'un mot de l\'univers de Dofus.<table class="grid"><tbody><tr><td class="padding"></td><td class="right">d</td><td class="right">o</td><td class="right">f</td><td class="right">u</td><td class="right">s</td><td class="dofus"></td></tr></tbody></table>Le mot à trouver sera toujours un mot appartenant à l\'univers de Dofus.',
     resultsHeader: '',
     resultsTable: '',
     share: false
   });
+}
+
+function getStatsHTML() {
+  const stats = getAllStats();
+  return `<p>TODO</p><pre style="background-color: black; width: 100%; overflow-x: scroll; height: 30px;">${'stats = ' + JSON.stringify(stats)}</pre>`;
 }
