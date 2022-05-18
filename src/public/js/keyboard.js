@@ -2,7 +2,7 @@ const DELETE_CHAR = '⌫';
 const ENTER_CHAR = '↲';
 
 function loadKeyboard(gameData, correctLetters = [], otherLetters = [], wrongLetters = []) {
-  const layout = 'azerty'; // TODO add layouts
+  const layout = 'azerty';
   const layouts = {
     'azerty': [
       ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -11,8 +11,10 @@ function loadKeyboard(gameData, correctLetters = [], otherLetters = [], wrongLet
     ]
   };
   const chars = { 'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'F', 'G': 'G', 'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N', 'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T', 'U': 'U', 'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z', '.': '.', 'enter': ENTER_CHAR, 'delete': DELETE_CHAR };
+
   const areaEl = document.querySelector('#input-area');
   areaEl.innerHTML = '';
+
   for (let i = 0; i < layouts[layout].length; i++) {
     const lineEl = document.createElement('div');
     lineEl.classList.add('input-line');

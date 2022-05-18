@@ -1,14 +1,12 @@
 const MAXIMUM_TRIES = 6;
 
-window.addEventListener("load", () => {
+window.addEventListener('load', () => {
   const {word, number} = getWordOfTheDay();
   // while (word.length < 3 || word.length > 9) word = getWordOfTheDay();
   if (word === '') {
     console.error('The game cannot be loaded, please try again.');
     return;
   }
-
-  console.log(word);
 
   const gameData = {
     word,
@@ -67,8 +65,7 @@ function getDictionary(length, dictionary) {
 }
 
 /**
- * Creates an event listener that runs a function depending on which key is pressed.
- * Possible functions are: Add letter, Remove letter, Validate word
+ * Creates an event listener on the keyboard.
  * @param {Data} gameData
  */
 function loadEvents(gameData) {
@@ -81,7 +78,7 @@ function loadEvents(gameData) {
       addLetter(gameData, key);
     } else if (key === ' ') {
       addLetter(gameData, '.');
-      event.preventDefault();
+      event.preventDefault(); // Avoids scrolling down the page with space
     } else if (key === 'backspace') {
       removeLetter(gameData);
     } else if (key === 'enter') {
@@ -339,7 +336,7 @@ function loadGame(gameData) {
   if (!game) return;
 
   const start = new Date();
-  start.setUTCHours(0,0,0,0);
+  start.setHours(0,0,0,0);
 
   if (game.date < start.getTime()) {
     localStorage.setItem('game', JSON.stringify(

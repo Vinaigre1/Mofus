@@ -12,9 +12,6 @@
   </head>
   <body>
     <div class="header">
-      <!-- <a href="#" class="header-icon" id="config-audio-button">
-        <img src="/public/img/icon-mute-50.png" alt="mute">
-      </a> -->
       <div class="header-icon" id="config-stats-button" onclick="loadStatsPanel()">
         <img src="/public/img/icon-stats-64.png" alt="stats">
       </div>
@@ -22,28 +19,15 @@
       <div class="header-icon" id="config-rules-button" onclick="loadHelpPanel()">
         <img src="/public/img/icon-help-48.png" alt="help">
       </div>
-      <!-- <a href="#" class="header-icon" id="config-config-button">
-        <img src="/public/img/icon-config-64.png" alt="config">
-      </a> -->
     </div>
     <div id="panel" class="panel invisible"></div>
     <div id="panel-template" class="panel-content invisible">
       <img height="30" src="/public/img/icon-cross-64.png" class="panel-cross"></img>
-      <h2 class="panel-title">Gagné !</h2>
-      <div>
-        <div class="panel-header">
-          <p>Vous avez trouvé le mot : <span id="word">placeholder</span></p>
-        </div>
-        <div class="panel-results">
-          <div class="panel-results-header">
-            <p>SUFOD 1 4/6</p>
-            <p>Mots Dofus : <span id="dofus-words">3</span></p>
-          </div>
-          <table class="panel-results-table"></table>
-          <hr>
-          <div id="share"><span>Partager</span><img class="share-icon" height="20" src="/public/img/icon-share-64.png" alt="share"></div>
-          <span class="share-message">Copié dans le presse-papier !</span>
-        </div>
+      <h2 class="panel-title"></h2>
+      <div class="panel-header"></div>
+      <div class="panel-results">
+        <div class="panel-results-header"></div>
+        <table class="panel-results-table"></table>
       </div>
     </div>
     <div class="content">
