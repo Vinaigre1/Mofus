@@ -1,4 +1,81 @@
+body {
+  background-color: #333;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+div.header {
+  border-bottom: 2px solid white;
+  width: 100%;
+  text-align: center;
+}
+
+div.header > * {
+  display: inline-block;
+}
+
+a.header-icon img {
+  height: 48px;
+  filter: invert(100%);
+}
+
+#grid {
+  margin-top: 40px;
+}
+
+#grid table {
+  border-spacing: 5px;
+  margin: 0 auto;
+}
+
 #grid td {
-  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 25px;
   text-transform: uppercase;
+  background-color: #555;
+}
+
+#grid td.other {
+  background-color: rgb(181, 159, 59);
+}
+
+#grid td.right {
+  background-color: rgb(83, 141, 78);
+}
+
+#input-area {
+  margin-top: 20px;
+}
+
+.input-line {
+  text-align: center;
+}
+
+.input-letter {
+  display: inline-block;
+  border: 1px solid #fff;
+  /* border-radius: 10px; */
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin: 5px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.input-letter.correct-letter {
+  background-color:rgb(83, 141, 78);
+}
+
+.input-letter.other-letter {
+  background-color: rgb(181, 159, 59);
 }

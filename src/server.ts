@@ -7,7 +7,7 @@ const publicDir = __dirname + '/public';
 
 app.use('/public', express.static(publicDir));
 
-app.get('/', function(req: Request, res: Response) {
+app.get('/', (req: Request, res: Response) => {
   res.sendFile(publicDir + '/index.html');
 });
 

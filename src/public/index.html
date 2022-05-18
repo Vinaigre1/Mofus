@@ -6,37 +6,26 @@
     <title>SUFOD</title>
     <link rel="stylesheet" href="/public/css/style.css" type="text/css">
     <link rel="apple-touch-icon" href="icon.png">
-    <script src="/public/js/script.js"></script>
+    <script src="/public/js/game.js"></script>
+    <script src="/public/js/keyboard.js"></script>
   </head>
   <body>
     <div id="content">
-      <header>
-        <div class="header-icons">
-          <a href="#" id="config-rules-button">
-            <svg id="config-rules-icon">
-              <use href="#icon-rules" stroke="var(--couleur-icon)" fill="var(--couleur-icon)">
-
-              </use>
-            </svg>
-          </a>
-          <a href="#" id="config-stats-button">
-            <svg id="config-stats-icon">
-              <use href="#icon-stats" stroke="var(--couleur-icon)"></use>
-            </svg>
-          </a>
-        </div>
+      <div class="header">
+        <a href="#" class="header-icon" id="config-rules-button">
+          <img src="/public/img/icon-help-48.png" alt="help">
+        </a>
+        <a href="#" class="header-icon" id="config-stats-button">
+          <img src="/public/img/icon-stats-64.png" alt="stats">
+        </a>
         <h1>SUFOD</h1>
-        <div class="header-icons">
-          <a href="#" id="config-audio-button">
-            <svg id="config-audio-icon"><use href="#icon-muted" fill="var(--couleur-icon)"></use></svg>
-          </a>
-          <a href="#" id="config-config-button">
-            <svg id="config-config-icon">
-              <use href="#icon-config" fill="var(--couleur-icon)"></use>
-            </svg>
-          </a>
-        </div>
-      </header>
+        <a href="#" class="header-icon" id="config-audio-button">
+          <img src="/public/img/icon-mute-50.png" alt="mute">
+        </a>
+        <a href="#" class="header-icon" id="config-config-button">
+          <img src="/public/img/icon-config-64.png" alt="config">
+        </a>
+      </div>
       <div id="panel-area" class="rules-panel" style="display: none;">
         <div id="panel-window">
           <div id="panel-window-header">
@@ -71,43 +60,7 @@
         </div>
       </div>
       <div id="grid" class="grid"></div>
-      <div id="input-area">
-        <div class="input-line">
-          <div class="input-letter" data-letter="A">A</div>
-          <div class="input-letter" data-letter="Z">Z</div>
-          <div class="input-letter" data-letter="E">E</div>
-          <div class="input-letter" data-letter="R">R</div>
-          <div class="input-letter" data-letter="T">T</div>
-          <div class="input-letter" data-letter="Y">Y</div>
-          <div class="input-letter" data-letter="U">U</div>
-          <div class="input-letter" data-letter="I">I</div>
-          <div class="input-letter" data-letter="O">O</div>
-          <div class="input-letter" data-letter="P">P</div>
-        </div>
-        <div class="input-line">
-          <div class="input-letter" data-letter="Q">Q</div>
-          <div class="input-letter" data-letter="S">S</div>
-          <div class="input-letter" data-letter="D">D</div>
-          <div class="input-letter" data-letter="F">F</div>
-          <div class="input-letter" data-letter="G">G</div>
-          <div class="input-letter" data-letter="H">H</div>
-          <div class="input-letter" data-letter="J">J</div>
-          <div class="input-letter" data-letter="K">K</div>
-          <div class="input-letter" data-letter="L">L</div>
-          <div class="input-letter" data-letter="M">M</div>
-        </div>
-        <div class="input-line">
-          <div class="input-letter" data-letter=".">.</div>
-          <div class="input-letter" data-letter="W">W</div>
-          <div class="input-letter" data-letter="X">X</div>
-          <div class="input-letter" data-letter="C">C</div>
-          <div class="input-letter" data-letter="V">V</div>
-          <div class="input-letter" data-letter="B">B</div>
-          <div class="input-letter" data-letter="N">N</div>
-          <div class="input-letter" data-letter="_delete">⌫</div>
-          <div class="input-letter input-letter-enter" data-letter="_enter">↲</div>
-        </div>
-      </div>
+      <div id="input-area"></div>
     </div>
   </body>
 </html>
