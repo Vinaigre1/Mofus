@@ -186,5 +186,3 @@ function loadWinPanel(gameData) {
   panel.innerHTML = '';
   panel.appendChild(contentCopy);
 }
-
-

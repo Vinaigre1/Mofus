@@ -39,6 +39,7 @@ function loadKeyboard(gameData, correctLetters = [], otherLetters = [], wrongLet
           addLetter(gameData, letter);
         }
         loadGrid(gameData);
+        updateGame(gameData);
       });
       lineEl.appendChild(letterEl);
     }

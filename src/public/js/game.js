@@ -29,6 +29,7 @@ window.addEventListener("load", () => {
   loadGrid(gameData);
   loadEvents(gameData);
   loadKeyboard(gameData);
+  loadGame(gameData);
 });
 
 /**
@@ -87,6 +88,7 @@ function loadEvents(gameData) {
       validateWord(gameData);
     }
     loadGrid(gameData);
+    updateGame(gameData);
   });
 }
 
@@ -109,8 +111,8 @@ function createNewEntry(gameData) {
  * @param {string} letter
  */
 function addLetter(gameData, letter) {
+  letter = letter.toUpperCase();
   if (gameData.cursor[1] >= gameData.word.length) return;
-  // if (cursor[1] === 0 && letter !== word[0]) cursor[1] = 1;
 
   gameData.entries[gameData.cursor[0]][gameData.cursor[1]] = letter;
   gameData.cursor[1]++;
@@ -145,20 +147,21 @@ function validateWord(gameData) {
   if (gameData.results[gameData.cursor[0]].indexOf(0) === -1 && gameData.results[gameData.cursor[0]].indexOf(1) === -1) {
     gameData.win = true;
     loadWinPanel(gameData);
+    updateStats(gameData);
   } else if (gameData.cursor[0] + 1 >= MAXIMUM_TRIES) {
     gameData.lose = true;
     loadLosePanel(gameData);
+    updateStats(gameData);
   } else {
     createNewEntry(gameData);
   }
-
-  updateCookie(gameData);
 
   const keyColors = {
     correct: [],
     other: [],
     wrong: []
   };
+
   for (let i = 0; i < gameData.results.length; i++) {
     for (let j = 0; j < gameData.results[i].length; j++) {
       if (gameData.results[i][j] === 1) {
@@ -171,10 +174,7 @@ function validateWord(gameData) {
     }
   }
 
-  console.log(keyColors);
   loadKeyboard(gameData, keyColors.correct, keyColors.other, keyColors.wrong);
-
-  console.log('entered word is', entry);
 }
 
 /**
@@ -266,11 +266,98 @@ function copyResults(gameData) {
 }
 
 /**
- * Update the user cookie with game data
+ * Update the game in local storage
  * @param {Data} gameData
  */
-function updateCookie(gameData) {
+function updateGame(gameData) {
+  const game = JSON.parse(localStorage.getItem('game')) || {
+    'date': new Date().getTime(),
+    'words': [],
+    'state': 'in_progress'
+  };
 
+  if (game.state !== 'in_progress') return;
+
+  game.words = [];
+
+  for (let i = 0; i < gameData.entries.length; i++) {
+    if (i < gameData.cursor[0]) {
+      game.words.push(gameData.entries[i].join(''));
+    }
+  }
+  localStorage.setItem('game', JSON.stringify(game));
+}
+
+/**
+ * Update the stats in local storage
+ * @param {number} numberOfTries
+ */
+function updateStats(gameData) {
+  const stats = JSON.parse(localStorage.getItem('stats')) || {
+    '1': 0,
+    '2': 0,
+    '3': 0,
+    '4': 0,
+    '5': 0,
+    '6': 0,
+    '-': 0,
+    'streak': 0,
+    'maxStreak': 0
+  };
+  const game = JSON.parse(localStorage.getItem('game')) || {
+    'date': new Date().getTime(),
+    'words': [],
+    'state': 'in_progress'
+  };
+  const numberOfTries = gameData.cursor[0] + 1;
+
+  if (game.state !== 'in_progress') return;
+
+  if (numberOfTries >= 1 && numberOfTries <= 6) {
+    stats[numberOfTries]++;
+    stats.streak++;
+    game.state = 'win';
+  } else {
+    stats['-']++;
+    stats.streak = 0;
+    game.state = 'lose';
+  }
+  stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
+
+  game.words.push(gameData.entries[gameData.cursor[0]].join(''));
+
+  localStorage.setItem('stats', JSON.stringify(stats));
+  localStorage.setItem('game', JSON.stringify(game));
+}
+
+/**
+ * Load the game from local storage
+ * @param {Data} gameData 
+ */
+function loadGame(gameData) {
+  const game = JSON.parse(localStorage.getItem('game'));
+  if (!game) return;
+
+  const start = new Date();
+  start.setUTCHours(0,0,0,0);
+
+  if (game.date < start.getTime()) {
+    localStorage.setItem('game', JSON.stringify(
+      {
+        'date': new Date().getTime(),
+        'words': [],
+        'state': 'in_progress'
+      }
+    ));
+  } else {
+    for (let i = 0; i < game.words.length; i++) {
+      for (let j = 0; j < game.words[i].length; j++) {
+        addLetter(gameData, game.words[i][j]);
+      }
+      validateWord(gameData);
+    }
+  }
+  loadGrid(gameData);
 }
 
 // TODO: iframe integration
