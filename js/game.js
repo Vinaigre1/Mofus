@@ -2,12 +2,6 @@ const MAXIMUM_TRIES = 6;
 
 window.addEventListener('load', () => {
   const {word, number} = getWordOfTheDay();
-  // while (word.length < 3 || word.length > 9) word = getWordOfTheDay();
-  if (word === '') {
-    console.error('The game cannot be loaded, please try again.');
-    return;
-  }
-  console.log(word);
 
   const gameData = {
     word,
@@ -104,7 +98,7 @@ function loadEvents(gameData) {
       addLetter(gameData, key);
     } else if (key === ' ') {
       addLetter(gameData, '.');
-      event.preventDefault(); // Avoids scrolling down the page with space
+      event.preventDefault(); // Avoids scrolling down the page with spacebar
     } else if (key === 'backspace') {
       removeLetter(gameData);
     } else if (key === 'enter') {
@@ -280,8 +274,16 @@ function copyResults(gameData) {
   str += '\n';
   str += window.location.origin;
 
-  navigator.clipboard.writeText(str);
-  const messageNode = document.querySelector('.share-message');
+  const messageNode = document.querySelector('.share-message')
+  if (!navigator.clipboard) {
+    messageNode.innerHTML = 'Impossible de copier dans le presse-papier.';
+  } else {
+    navigator.clipboard.writeText(str, () => {
+      messageNode.innerHTML = 'Copié dans le presse-papier !';
+    }, () => {
+      messageNode.innerHTML = 'Impossible de copier dans le presse-papier.';
+    });
+  }
   messageNode.style.opacity = 1;
   setTimeout(() => {
     messageNode.style.opacity = 0;

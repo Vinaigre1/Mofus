@@ -12,23 +12,30 @@ h1 {
 }
 
 div.header {
-  border-bottom: 2px solid white;
-  width: 100%;
+  width: 650px;
   text-align: center;
+  display: flex;
+  margin: 0 auto;
 }
 
 div.header > * {
   display: inline-block;
+  flex: 1;
 }
 
 .header-icon {
   cursor: pointer;
   user-select: none;
+  position: relative;
 }
 
 .header-icon img {
   height: 48px;
   filter: invert(100%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .content {
@@ -68,7 +75,7 @@ div.header > * {
 
 .grid td.dofus {
   background-color: initial;
-  background-image: url("./img/dofus.png");
+  background-image: url("../img/dofus.png");
   background-size: cover;
 }
 
@@ -86,10 +93,13 @@ div.header > * {
 }
 
 .input-line {
-  text-align: center;
+  margin: 0 auto;
+  max-width: 500px;
+  display: flex;
 }
 
 .input-letter {
+  flex: 1;
   display: inline-block;
   border: 1px solid #fff;
   width: 40px;
@@ -165,7 +175,7 @@ div.header > * {
 
 .icon-star {
   border: none;
-  background-image: url("./img/dofus.png");
+  background-image: url("../img/dofus.png");
   background-size: cover;
 }
 
