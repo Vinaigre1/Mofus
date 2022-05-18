@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUFOD</title>
+    <link rel="stylesheet" href="/public/css/style.css" type="text/css">
+    <link rel="apple-touch-icon" href="icon.png">
+    <script src="/public/js/script.js"></script>
+  </head>
+  <body>
+    <div id="content">
+      <header>
+        <div class="header-icons">
+          <a href="#" id="config-rules-button">
+            <svg id="config-rules-icon">
+              <use href="#icon-rules" stroke="var(--couleur-icon)" fill="var(--couleur-icon)">
+
+              </use>
+            </svg>
+          </a>
+          <a href="#" id="config-stats-button">
+            <svg id="config-stats-icon">
+              <use href="#icon-stats" stroke="var(--couleur-icon)"></use>
+            </svg>
+          </a>
+        </div>
+        <h1>SUFOD</h1>
+        <div class="header-icons">
+          <a href="#" id="config-audio-button">
+            <svg id="config-audio-icon"><use href="#icon-muted" fill="var(--couleur-icon)"></use></svg>
+          </a>
+          <a href="#" id="config-config-button">
+            <svg id="config-config-icon">
+              <use href="#icon-config" fill="var(--couleur-icon)"></use>
+            </svg>
+          </a>
+        </div>
+      </header>
+      <div id="panel-area" class="rules-panel" style="display: none;">
+        <div id="panel-window">
+          <div id="panel-window-header">
+            <h2 id="panel-window-title">Règles</h2>
+            <div>
+              <a href="#" id="panel-window-close-button">
+                <svg id="panel-window-close-icon">
+                  <use href="#icon-cross" stroke="var(--couleur-icon)"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div id="panel-window-notification">&nbsp;</div>
+          <div id="panel-window-content">
+            <p>Vous avez six essais pour deviner le mot du jour, entre 6 et 9 lettres, commun à tous.<br>Vous ne pouvez proposer que des mots commençant par la même lettre que le mot recherché, et qui se trouvent dans notre dictionnaire.<br>Les noms propres ne sont pas acceptés.<br>Le mot change chaque jour. Évitez donc les spoils et privilégiez le bouton de partage.<br></p>
+            <div class="grid">
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="resultat bien-place">S</td>
+                    <td class="resultat non-trouve">A</td>
+                    <td class="resultat non-trouve">L</td>
+                    <td class="resultat mal-place">U</td>
+                    <td class="resultat mal-place">T</td>
+                  </tr>
+                </tbody>
+              </table>
+              Les lettres entourées d'un carré rouge sont bien placées,<br>les lettres entourées d'un cercle jaune sont mal placées (mais présentes dans le mot).<br>Les lettres qui restent sur fond bleu ne sont pas dans le mot.<br>
+            </div>
+            <p>En cas de soucis, vous pouvez contacter <a href="https://twitter.com/Jonamaths">@Jonamaths</a> sur twitter. −<a target="_blank" href="https://framagit.org/JonathanMM/sutom">Page du projet</a><br>Basé sur l'excellent <a target="_blank" href="https://www.powerlanguage.co.uk/wordle/">Wordle</a> et le regretté Motus.<br>Merci à Emmanuel pour l'aide sur les mots à trouver, et à GaranceAmarante pour l'aide sur le dictionnaire.</p>
+          </div>
+        </div>
+      </div>
+      <div id="grid" class="grid"></div>
+      <div id="input-area">
+        <div class="input-line">
+          <div class="input-letter" data-letter="A">A</div>
+          <div class="input-letter" data-letter="Z">Z</div>
+          <div class="input-letter" data-letter="E">E</div>
+          <div class="input-letter" data-letter="R">R</div>
+          <div class="input-letter" data-letter="T">T</div>
+          <div class="input-letter" data-letter="Y">Y</div>
+          <div class="input-letter" data-letter="U">U</div>
+          <div class="input-letter" data-letter="I">I</div>
+          <div class="input-letter" data-letter="O">O</div>
+          <div class="input-letter" data-letter="P">P</div>
+        </div>
+        <div class="input-line">
+          <div class="input-letter" data-letter="Q">Q</div>
+          <div class="input-letter" data-letter="S">S</div>
+          <div class="input-letter" data-letter="D">D</div>
+          <div class="input-letter" data-letter="F">F</div>
+          <div class="input-letter" data-letter="G">G</div>
+          <div class="input-letter" data-letter="H">H</div>
+          <div class="input-letter" data-letter="J">J</div>
+          <div class="input-letter" data-letter="K">K</div>
+          <div class="input-letter" data-letter="L">L</div>
+          <div class="input-letter" data-letter="M">M</div>
+        </div>
+        <div class="input-line">
+          <div class="input-letter" data-letter=".">.</div>
+          <div class="input-letter" data-letter="W">W</div>
+          <div class="input-letter" data-letter="X">X</div>
+          <div class="input-letter" data-letter="C">C</div>
+          <div class="input-letter" data-letter="V">V</div>
+          <div class="input-letter" data-letter="B">B</div>
+          <div class="input-letter" data-letter="N">N</div>
+          <div class="input-letter" data-letter="_delete">⌫</div>
+          <div class="input-letter input-letter-enter" data-letter="_enter">↲</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
