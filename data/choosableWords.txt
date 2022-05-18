@@ -2389,8 +2389,8 @@ transfiguration
 transfusion
 transition
 transmutee
-transpereant
-transpereante
+transpercant
+transpercante
 transposition
 transversal
 transversale
