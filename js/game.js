@@ -352,8 +352,8 @@ function updateStats(gameData) {
     game.state = 'lose';
   }
   stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
-  stats.normalWords += gameData.entryDict.filter(n => false).length;
-  stats.dofusWords += gameData.entryDict.filter(n => true).length;
+  stats.normalWords += gameData.entryDict.filter(n => !n).length;
+  stats.dofusWords += gameData.entryDict.filter(n => n).length;
 
   game.words.push(gameData.entries[gameData.cursor[0]].join(''));
 
