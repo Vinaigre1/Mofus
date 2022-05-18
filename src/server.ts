@@ -25,7 +25,6 @@ app.get('/list', (req: Request, res: Response) => {
 
 app.get('/wordoftheday', (req: Request, res: Response) => {
   const wordFile = `${__dirname}/data/choosableWords.txt`;
-  // const wordFile = `${__dirname}/data/partial/dofus3.txt`;
 
   fs.readFile(wordFile, 'utf-8', (err, data) => {
     if (err) throw err;

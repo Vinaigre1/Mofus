@@ -116,11 +116,79 @@ a.header-icon img {
   margin: 10px;
 }
 
+.panel-cross {
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  filter: invert(100%);
+  cursor: pointer;
+}
+
+.panel-cross:hover {
+  filter: invert(100%) brightness(75%);
+}
+
+.icon-green,
+.icon-black,
+.icon-yellow,
+.icon-star {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.icon-green {
+  background-color: rgb(79, 161, 72);
+}
+
+.icon-black {
+  background-color: #555;
+}
+
+.icon-yellow {
+  background-color: rgb(204, 176, 49);
+}
+
+.icon-star {
+  border: none;
+  background-image: url("/public/img/dofus.png");
+  background-size: cover;
+}
+
 #share {
-  background-color: white;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #444;
   padding: 8px 12px;
   border-radius: 5px;
-  border: none;
-  color: #555;
+  border: 2px solid white;
+  color: white;
   font-size: 17px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#share:hover {
+  border: 2px solid #bbb;
+  color: #bbb;
+}
+
+#share:hover img.share-icon {
+  filter: invert(100%) brightness(75%);
+}
+
+img.share-icon {
+  filter: invert(100%);
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.share-message {
+  opacity: 0;
+  transition: opacity 1s;
+  margin-left: 20px;
+}
+
+.invisible {
+  display: none;
 }

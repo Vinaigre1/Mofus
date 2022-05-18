@@ -13,45 +13,45 @@
   <body>
     <div id="content">
       <div class="header">
-        <a href="#" class="header-icon" id="config-rules-button">
+        <!-- <a href="#" class="header-icon" id="config-rules-button">
           <img src="/public/img/icon-help-48.png" alt="help">
         </a>
         <a href="#" class="header-icon" id="config-stats-button">
           <img src="/public/img/icon-stats-64.png" alt="stats">
-        </a>
+        </a> -->
         <h1>SUFOD</h1>
-        <a href="#" class="header-icon" id="config-audio-button">
+        <!-- <a href="#" class="header-icon" id="config-audio-button">
           <img src="/public/img/icon-mute-50.png" alt="mute">
         </a>
         <a href="#" class="header-icon" id="config-config-button">
           <img src="/public/img/icon-config-64.png" alt="config">
-        </a>
+        </a> -->
       </div>
     </div>
-    <div class="panel">
-      <div class="panel-content">
-        <h2 class="panel-title">Gagné !</h2>
-        <div class="panel-content">
-          <div class="panel-message">
-            <div>Vous avez trouvé le mot : <span id="word">placeholder</span></div>
+    <div id="panel" class="panel invisible"></div>
+    <div id="panel-template" class="panel-content invisible">
+      <img height="30" src="/public/img/icon-cross-64.png" class="panel-cross"></img>
+      <h2 class="panel-title">Gagné !</h2>
+      <div>
+        <div class="panel-header">
+          <p>Vous avez trouvé le mot : <span id="word">placeholder</span></p>
+        </div>
+        <hr>
+        <div class="panel-results">
+          <div class="panel-results-header">
+            <p>SUFOD 1 4/6</p>
+            <p>Mots Dofus : <span id="dofus-words">3</span></p>
           </div>
-          <div class="panel-results">
-            <div class="panel-results-header">
-              <div>SUFOD 1 4/6</div>
-              <div>Mots Dofus : <span id="dofus-words">3</span></div>
-            </div>
-            <table class="panel-results-table">
-              <tr><td>🟩</td><td>⬛</td><td>⬛</td><td>⬛</td><td>🟩</td><td>⬛</td><td>⭐</td></tr><tr><td>🟩</td><td>⬛</td><td>🟩</td><td>⬛</td><td>🟨</td><td>⬛</td><td>⭐</td></tr><tr><td>🟩</td><td>⬛</td><td>🟩</td><td>🟨</td><td>🟨</td><td>⬛</td><td></td></tr><tr><td>🟩</td><td>🟩</td><td>🟩</td><td>🟩</td><td>🟩</td><td>🟩</td><td>⭐</td></tr>
-            </table>
-            <button id="share">Partager</button>
-          </div>
+          <table class="panel-results-table"></table>
+          <hr>
+          <div id="share"><span>Partager</span><img class="share-icon" height="20" src="/public/img/icon-share-64.png" alt="share"></div>
+          <span class="share-message">Copié dans le presse-papier !</span>
         </div>
       </div>
     </div>
-    </div>
+    <div>
       <div id="grid" class="grid"></div>
       <div id="input-area"></div>
-      <div>&#x1F7E9; &#x1F7E5; &#x1F7E7; &#x2B50;</div>
     </div>
   </body>
 </html>

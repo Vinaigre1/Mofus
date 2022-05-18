@@ -54,3 +54,51 @@
   }
   gridEl.innerHTML = tableEl.outerHTML;
 }
+
+/**
+ * Load the Game Over panel
+ * @param {Data} gameData
+ */
+function loadPanel(gameData) {
+  const panel = document.getElementById('panel');
+  const template = document.getElementById('panel-template');
+  const contentCopy = template.cloneNode(true);
+
+  contentCopy.id = '';
+  contentCopy.classList.remove('invisible');
+
+  const panelTitle = contentCopy.querySelector('h2');
+  panelTitle.innerHTML = 'Gagné !';
+
+  const headerContent = contentCopy.querySelector('.panel-header');
+  headerContent.innerHTML = `<p>Vous avez trouvé le mot : <span id="word">${gameData.word}</span></p>`;
+
+  const resultsHeaderContent = contentCopy.querySelector('.panel-results-header');
+  resultsHeaderContent.innerHTML = `<p>SUFOD ${gameData.number} ${gameData.cursor.length}/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`;
+
+  const resultsTable = contentCopy.querySelector('.panel-results-table');
+  const icons = ['icon-black', 'icon-yellow', 'icon-green'];
+  let html = '';
+  for (let i = 0; i < gameData.results.length; i++) {
+    html += '<tr>';
+    for (let j = 0; j < gameData.results[i].length; j++) {
+      html += `<td class="${icons[gameData.results[i][j]]}"></td>`;
+    }
+    html += `<td class="${gameData.entryDict[i] ? 'icon-star' : ''}"></td>`;
+    html += '</tr>';
+  }
+  resultsTable.innerHTML = html;
+
+  contentCopy.querySelector('#share').addEventListener('click', () => {
+    copyResults(gameData);
+  });
+
+  contentCopy.querySelector('.panel-cross').addEventListener('click', () => {
+    contentCopy.remove();
+    panel.classList.add('invisible');
+  });
+
+  panel.classList.remove('invisible');
+  panel.innerHTML = '';
+  panel.appendChild(contentCopy);
+}

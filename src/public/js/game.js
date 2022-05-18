@@ -87,10 +87,6 @@ function loadEvents(gameData) {
     }
     loadGrid(gameData);
   });
-
-  document.getElementById('share').addEventListener('click', (event) => {
-    copyResults(gameData);
-  });
 }
 
 /**
@@ -147,6 +143,7 @@ function validateWord(gameData) {
   gameData.results[gameData.cursor[0]] = checkWord(gameData.word, entry);
   if (gameData.results[gameData.cursor[0]].indexOf(0) === -1 && gameData.results[gameData.cursor[0]].indexOf(1) === -1) {
     gameData.win = true;
+    loadPanel(gameData);
   } else if (gameData.cursor[0] + 1 >= MAXIMUM_TRIES) {
     gameData.lose = true;
     console.log('Perdu !');
@@ -240,15 +237,10 @@ function checkWord(_word, entry) {
  * @param {Data} gameData
  */
 function copyResults(gameData) {
-  const icons = [
-    '⬛',
-    '🟨',
-    '🟩'
-  ];
+  const icons = [ '⬛', '🟨', '🟩' ];
   const dofus = gameData.entryDict.filter(x => x).length;
-  
-  let str = `SUFOD n°${gameData.number}\nMots Dofus : ${dofus}\n`;
 
+  let str = `SUFOD n°${gameData.number}\nMots Dofus : ${dofus}\n\n`;
   for (let i = 0; i < gameData.results.length; i++) {
     for (let j = 0; j < gameData.results[i].length; j++) {
       str += icons[gameData.results[i][j]];
@@ -258,10 +250,15 @@ function copyResults(gameData) {
     }
     str += '\n';
   }
-
+  str += '\n';
   str += window.location.origin;
 
   navigator.clipboard.writeText(str);
+  const messageNode = document.querySelector('.share-message');
+  messageNode.style.opacity = 1;
+  setTimeout(() => {
+    messageNode.style.opacity = 0;
+  }, 2000);
 }
 
 // TODO: iframe integration
