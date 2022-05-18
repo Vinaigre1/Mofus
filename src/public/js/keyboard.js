@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
   loadKeyboard();
 });
 
-function loadKeyboard(correctLetters = [], otherLetters = []) {
+function loadKeyboard(correctLetters = [], otherLetters = [], wrongLetters = []) {
   const layout = 'azerty'; // TODO add layouts
   const layouts = {
     'azerty': [
@@ -27,6 +27,8 @@ function loadKeyboard(correctLetters = [], otherLetters = []) {
         letterEl.classList.add('correct-letter');
       } else if (otherLetters.indexOf(layouts[layout][i][j]) >= 0) {
         letterEl.classList.add('other-letter');
+      } else if (wrongLetters.indexOf(layouts[layout][i][j]) >= 0) {
+        letterEl.classList.add('wrong-letter');
       }
       lineEl.appendChild(letterEl);
     }

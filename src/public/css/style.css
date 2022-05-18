@@ -52,6 +52,25 @@ a.header-icon img {
   background-color: rgb(83, 141, 78);
 }
 
+#grid td.padding {
+  visibility: hidden;
+}
+
+#grid td.dofus {
+  background-color: initial;
+  background-image: url("/public/img/dofus.png");
+  background-size: cover;
+}
+
+#grid td.cursor {
+  border: 1px solid white;
+  box-sizing: border-box;
+}
+
+#grid td.placeholder {
+  color: #aaa;
+}
+
 #input-area {
   margin-top: 20px;
 }
@@ -78,4 +97,30 @@ a.header-icon img {
 
 .input-letter.other-letter {
   background-color: rgb(181, 159, 59);
+}
+
+.input-letter.wrong-letter {
+  border-color: #555;
+  color: #555;
+}
+
+.panel {
+  position: fixed;
+  width: 50%;
+  background-color: #444;
+  border: 1px solid white;
+  left: 25%;
+}
+
+.panel-content {
+  margin: 10px;
+}
+
+#share {
+  background-color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  color: #555;
+  font-size: 17px;
 }

@@ -513,8 +513,8 @@ boble
 bobles
 bocciara
 bocciaras
-boete
-boetes
+boite
+boites
 boiboite
 boiboites
 bolet
@@ -1325,8 +1325,6 @@ deflagrations
 degelee
 degelees
 degolas
-delave
-delaves
 deluge
 deluges
 demeure
@@ -3319,6 +3317,8 @@ nomade
 nomades
 nomekop
 nomekops
+noob
+noobs
 norde
 nordes
 norie

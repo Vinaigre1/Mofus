@@ -1694,6 +1694,7 @@ noir
 noisetier
 nomade
 nomekop
+noob
 norde
 norie
 nova

@@ -27,8 +27,8 @@ bleue
 bleus
 blops
 bluff
+boite
 boble
-boete
 bolet
 bombe
 bombu
@@ -216,6 +216,7 @@ nidas
 nipul
 noeul
 noirs
+noobs
 norde
 norie
 novas

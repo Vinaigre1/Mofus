@@ -8,6 +8,7 @@
     <link rel="apple-touch-icon" href="icon.png">
     <script src="/public/js/game.js"></script>
     <script src="/public/js/keyboard.js"></script>
+    <script src="/public/js/display.js"></script>
   </head>
   <body>
     <div id="content">
@@ -26,41 +27,31 @@
           <img src="/public/img/icon-config-64.png" alt="config">
         </a>
       </div>
-      <div id="panel-area" class="rules-panel" style="display: none;">
-        <div id="panel-window">
-          <div id="panel-window-header">
-            <h2 id="panel-window-title">Règles</h2>
-            <div>
-              <a href="#" id="panel-window-close-button">
-                <svg id="panel-window-close-icon">
-                  <use href="#icon-cross" stroke="var(--couleur-icon)"></use>
-                </svg>
-              </a>
-            </div>
+    </div>
+    <div class="panel">
+      <div class="panel-content">
+        <h2 class="panel-title">Gagné !</h2>
+        <div class="panel-content">
+          <div class="panel-message">
+            <div>Vous avez trouvé le mot : <span id="word">placeholder</span></div>
           </div>
-          <div id="panel-window-notification">&nbsp;</div>
-          <div id="panel-window-content">
-            <p>Vous avez six essais pour deviner le mot du jour, entre 6 et 9 lettres, commun à tous.<br>Vous ne pouvez proposer que des mots commençant par la même lettre que le mot recherché, et qui se trouvent dans notre dictionnaire.<br>Les noms propres ne sont pas acceptés.<br>Le mot change chaque jour. Évitez donc les spoils et privilégiez le bouton de partage.<br></p>
-            <div class="grid">
-              <table>
-                <tbody>
-                  <tr>
-                    <td class="resultat bien-place">S</td>
-                    <td class="resultat non-trouve">A</td>
-                    <td class="resultat non-trouve">L</td>
-                    <td class="resultat mal-place">U</td>
-                    <td class="resultat mal-place">T</td>
-                  </tr>
-                </tbody>
-              </table>
-              Les lettres entourées d'un carré rouge sont bien placées,<br>les lettres entourées d'un cercle jaune sont mal placées (mais présentes dans le mot).<br>Les lettres qui restent sur fond bleu ne sont pas dans le mot.<br>
+          <div class="panel-results">
+            <div class="panel-results-header">
+              <div>SUFOD 1 4/6</div>
+              <div>Mots Dofus : <span id="dofus-words">3</span></div>
             </div>
-            <p>En cas de soucis, vous pouvez contacter <a href="https://twitter.com/Jonamaths">@Jonamaths</a> sur twitter. −<a target="_blank" href="https://framagit.org/JonathanMM/sutom">Page du projet</a><br>Basé sur l'excellent <a target="_blank" href="https://www.powerlanguage.co.uk/wordle/">Wordle</a> et le regretté Motus.<br>Merci à Emmanuel pour l'aide sur les mots à trouver, et à GaranceAmarante pour l'aide sur le dictionnaire.</p>
+            <table class="panel-results-table">
+              <tr><td>🟩</td><td>⬛</td><td>⬛</td><td>⬛</td><td>🟩</td><td>⬛</td><td>⭐</td></tr><tr><td>🟩</td><td>⬛</td><td>🟩</td><td>⬛</td><td>🟨</td><td>⬛</td><td>⭐</td></tr><tr><td>🟩</td><td>⬛</td><td>🟩</td><td>🟨</td><td>🟨</td><td>⬛</td><td></td></tr><tr><td>🟩</td><td>🟩</td><td>🟩</td><td>🟩</td><td>🟩</td><td>🟩</td><td>⭐</td></tr>
+            </table>
+            <button id="share">Partager</button>
           </div>
         </div>
       </div>
+    </div>
+    </div>
       <div id="grid" class="grid"></div>
       <div id="input-area"></div>
+      <div>&#x1F7E9; &#x1F7E5; &#x1F7E7; &#x2B50;</div>
     </div>
   </body>
 </html>

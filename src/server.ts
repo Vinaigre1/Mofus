@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
+import * as fs from 'fs';
 
 const app = express();
 const port = 8080;
@@ -23,7 +24,18 @@ app.get('/list', (req: Request, res: Response) => {
 });
 
 app.get('/wordoftheday', (req: Request, res: Response) => {
-  res.send('dofus');
+  const wordFile = `${__dirname}/data/choosableWords.txt`;
+  // const wordFile = `${__dirname}/data/partial/dofus3.txt`;
+
+  fs.readFile(wordFile, 'utf-8', (err, data) => {
+    if (err) throw err;
+
+    const lines = data.split('\n');
+    const randomLine = lines[Math.floor(Math.random() * lines.length)];
+    const number = 0;
+
+    res.send(`${number} ${randomLine}`);
+ });
 });
 
 app.get('/', (req: Request, res: Response) => {

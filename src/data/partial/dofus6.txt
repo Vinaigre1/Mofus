@@ -71,7 +71,7 @@ blerom
 bleues
 bluffs
 bobles
-boetes
+boites
 bolets
 bombes
 bombus
@@ -152,7 +152,6 @@ darkli
 darmas
 dawajs
 dazaks
-delave
 deluge
 demoel
 demons

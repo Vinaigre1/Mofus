@@ -1,17 +1,24 @@
 const MAXIMUM_TRIES = 6;
 
 window.addEventListener("load", () => {
-  const word = getWordOfTheDay();
+  const {word, number} = getWordOfTheDay();
+  // while (word.length != 5) word = getWordOfTheDay();
   if (word === '') {
     console.error('The game cannot be loaded, please try again.');
     return;
   }
 
+  console.log(word);
+
   const gameData = {
     word,
+    number,
     entries: [],
+    entryDict: [],
     results: [],
     cursor: [0, 0],
+    win: false,
+    lose: false,
     dictionary: {
       dofus: getDictionary(word.length, 'dofus'),
       french: getDictionary(word.length, 'french')
@@ -32,7 +39,8 @@ function getWordOfTheDay() {
   xhr.open('GET', '/wordoftheday', false);
   xhr.send();
   if (xhr.status === 200) {
-    return xhr.responseText;
+    const [number, word] = xhr.responseText.split(' ');
+    return { word, number };
   } else {
     console.error('An error has occured while trying to get the word of the day.');
     return '';
@@ -51,46 +59,9 @@ function getDictionary(length, dictionary) {
   if (xhr.status === 200) {
     return xhr.responseText;
   } else {
-    console.error('An error has occured while trying to get the word of the day.');
+    console.error('An error has occured while trying to get the dictionary.');
     return '';
   }
-}
-
-/**
- * Loads the grid with every entry and results
- * @param {Data} gameData
- */
-function loadGrid(gameData) {
-  const gridEl = document.getElementById('grid');
-  const tableEl = document.createElement('table');
-  const resultClasses = ['none', 'other', 'right'];
-
-  const prefill = Array(gameData.word.length);
-  prefill.fill('.');
-  prefill[0] = gameData.word[0];
-  for (let i = 0; i < gameData.results.length; i++) {
-    for (let j = 0; j < gameData.results[i].length; j++) {
-      if (prefill[j] === '.' && gameData.results[i][j] === 2) {
-        prefill[j] = gameData.entries[i][j];
-      }
-    }
-  }
-
-  for (let i = 0; i < MAXIMUM_TRIES; i++) {
-    const trEl = document.createElement('tr');
-    let line = gameData.entries[i];
-    if (i === gameData.cursor[0] && gameData.cursor[1] === 0) {
-      line = prefill;
-    }
-    for (let j = 0; j < gameData.word.length; j++) {
-      const tdEl = document.createElement('td');
-      tdEl.textContent = line && line[j] || (i == gameData.cursor[0] ? '.' : '');
-      tdEl.classList.add(resultClasses[gameData.results[i] && gameData.results[i][j] || 0]);
-      trEl.appendChild(tdEl);
-    }
-    tableEl.appendChild(trEl);
-  }
-  gridEl.innerHTML = tableEl.outerHTML;
 }
 
 /**
@@ -100,16 +71,25 @@ function loadGrid(gameData) {
  */
 function loadEvents(gameData) {
   const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-  document.addEventListener('keydown', (event) => {
+  gameData.keyboardEvent = document.addEventListener('keydown', (event) => {
+    if (gameData.win || gameData.lose) return;
+
     const key = event.key.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
     if (keys.indexOf(key) >= 0) {
       addLetter(gameData, key);
+    } else if (key === ' ') {
+      addLetter(gameData, '.');
+      event.preventDefault();
     } else if (key === 'backspace') {
       removeLetter(gameData);
     } else if (key === 'enter') {
       validateWord(gameData);
     }
     loadGrid(gameData);
+  });
+
+  document.getElementById('share').addEventListener('click', (event) => {
+    copyResults(gameData);
   });
 }
 
@@ -123,6 +103,7 @@ function createNewEntry(gameData) {
   gameData.entries.push(entry);
   gameData.cursor[0] = gameData.entries.length - 1;
   gameData.cursor[1] = 0;
+  gameData.entryDict.push(false);
 }
 
 /**
@@ -159,12 +140,15 @@ function validateWord(gameData) {
   if (gameData.cursor[1] < gameData.word.length) return;
 
   const entry = gameData.entries[gameData.cursor[0]].join('');
-  if (!wordExists(gameData, entry)) return;
+  const check = checkDictionary(gameData, entry);
+  if (!check.exists) return;
+  gameData.entryDict[gameData.cursor[0]] = check.dofus;
 
   gameData.results[gameData.cursor[0]] = checkWord(gameData.word, entry);
   if (gameData.results[gameData.cursor[0]].indexOf(0) === -1 && gameData.results[gameData.cursor[0]].indexOf(1) === -1) {
-    console.log('Gagné !');
+    gameData.win = true;
   } else if (gameData.cursor[0] + 1 >= MAXIMUM_TRIES) {
+    gameData.lose = true;
     console.log('Perdu !');
   } else {
     createNewEntry(gameData);
@@ -172,7 +156,8 @@ function validateWord(gameData) {
 
   const keyColors = {
     correct: [],
-    other: []
+    other: [],
+    wrong: []
   };
   for (let i = 0; i < gameData.results.length; i++) {
     for (let j = 0; j < gameData.results[i].length; j++) {
@@ -180,12 +165,14 @@ function validateWord(gameData) {
         keyColors.other.push(gameData.entries[i][j].toUpperCase());
       } else if (gameData.results[i][j] === 2) {
         keyColors.correct.push(gameData.entries[i][j].toUpperCase());
+      } else {
+        keyColors.wrong.push(gameData.entries[i][j].toUpperCase());
       }
     }
   }
 
   console.log(keyColors);
-  loadKeyboard(keyColors.correct, keyColors.other);
+  loadKeyboard(keyColors.correct, keyColors.other, keyColors.wrong);
 
   console.log('entered word is', entry);
 }
@@ -193,12 +180,27 @@ function validateWord(gameData) {
 /**
  * Checks if the entry exists in the word database
  * @param {string} entry
- * @returns {boolean}
+ * @returns {Object}
  */
-function wordExists(gameData, entry) {
-  if (gameData.dictionary.dofus.includes(entry)) return true;
-  if (gameData.dictionary.french.includes(entry)) return true;
-  return false;
+function checkDictionary(gameData, entry) {
+  if (gameData.dictionary.dofus.includes(entry)) {
+    return {
+      exists: true,
+      dofus: true
+    };
+  }
+
+  if (gameData.dictionary.french.includes(entry)) {
+    return {
+      exists: true,
+      dofus: false
+    };
+  }
+
+  return {
+    exists: false,
+    dofus: false
+  };
 }
 
 /**
@@ -231,6 +233,35 @@ function checkWord(_word, entry) {
     }
   }
   return result;
+}
+
+/**
+ * Copy results to clipboard
+ * @param {Data} gameData
+ */
+function copyResults(gameData) {
+  const icons = [
+    '⬛',
+    '🟨',
+    '🟩'
+  ];
+  const dofus = gameData.entryDict.filter(x => x).length;
+  
+  let str = `SUFOD n°${gameData.number}\nMots Dofus : ${dofus}\n`;
+
+  for (let i = 0; i < gameData.results.length; i++) {
+    for (let j = 0; j < gameData.results[i].length; j++) {
+      str += icons[gameData.results[i][j]];
+    }
+    if (gameData.entryDict[i]) {
+      str += '⭐';
+    }
+    str += '\n';
+  }
+
+  str += window.location.origin;
+
+  navigator.clipboard.writeText(str);
 }
 
 // TODO: iframe integration
