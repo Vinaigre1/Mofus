@@ -409,7 +409,7 @@ function getAllStats() {
   const storedStats = JSON.parse(localStorage.getItem('stats'));
   if (!storedStats) return;
 
-  const totalGames = Object.keys(storedStats.results).reduce((pre, key) => Number(pre) + storedStats.results[key]);
+  const totalGames = Object.keys(storedStats.results).reduce((pre, key) => Number(pre) + storedStats.results[key], 0);
 
   return {
     games: totalGames,
