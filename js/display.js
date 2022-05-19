@@ -68,19 +68,20 @@ function loadPanel(data) {
   contentCopy.classList.remove('invisible');
 
   const panelTitle = contentCopy.querySelector('h2');
-  panelTitle.innerHTML = data.title;
+  panelTitle.innerHTML = data.title || '';
 
   const headerContent = contentCopy.querySelector('.panel-header');
-  headerContent.innerHTML = data.header;
+  headerContent.innerHTML = data.header || '';
 
   const resultsHeaderContent = contentCopy.querySelector('.panel-results-header');
-  resultsHeaderContent.innerHTML = data.resultsHeader;
+  resultsHeaderContent.innerHTML = data.resultsHeader || '';
 
   const resultsTable = contentCopy.querySelector('.panel-results-table');
-  resultsTable.innerHTML = data.resultsTable;
+  resultsTable.innerHTML = data.resultsTable || '';
+  if (!data.resultsTable) resultsTable.remove();
 
   const results = contentCopy.querySelector('.panel-results');
-  results.innerHTML += data.results;
+  results.innerHTML += data.results || '';
 
   if (data.share) {
     const html = `<div id="share"><span>${data.shareText}</span><img class="share-icon" height="20" src="./img/icon-share-64.png" alt="share"></div><span class="share-message">${data.shareMessage}</span>`;
@@ -89,6 +90,9 @@ function loadPanel(data) {
       copyResults(data.shareContent);
     });
   }
+
+  const footer = contentCopy.querySelector('.panel-footer');
+  footer.innerHTML = data.footer || '';
 
   contentCopy.querySelector('.panel-cross').addEventListener('click', () => {
     contentCopy.remove();
@@ -120,9 +124,10 @@ function loadWinPanel(gameData) {
   loadPanel({
     title: 'Gagné !',
     header: `<p>Vous avez trouvé le mot : <span id="word">${gameData.word.toUpperCase()}</span></p><hr>`,
-    results: getStatsHTML(),
+    results: '',
     resultsHeader: `<p>SUFOD n°${gameData.number} : ${gameData.cursor[0]+1}/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`,
     resultsTable: html,
+    footer: `<hr>${getStatsHTML()}`,
     share: true,
     shareText: 'Partager',
     shareMessage: 'Copié dans le presse-papier !',
@@ -149,9 +154,10 @@ function loadLosePanel(gameData) {
   loadPanel({
     title: 'Perdu !',
     header: `<p>Le mot était : <span id="word">${gameData.word}</span></p><hr>`,
-    results: getStatsHTML(),
+    results: '',
     resultsHeader: `<p>SUFOD n°${gameData.number} : -/6</p><p>Mots Dofus : <span id="dofus-words">${gameData.entryDict.filter(x => x).length}</span></p>`,
     resultsTable: html,
+    footer: `<hr>${getStatsHTML()}`,
     share: true,
     shareText: 'Partager',
     shareMessage: 'Copié dans le presse-papier !',
@@ -161,7 +167,6 @@ function loadLosePanel(gameData) {
 
 /**
  * Load the Help panel
- * @param {Data} gameData
  */
 function loadHelpPanel() {
   loadPanel({
@@ -174,7 +179,42 @@ function loadHelpPanel() {
   });
 }
 
+/**
+ * Loads the Stats panel
+ */
+function loadStatsPanel() {
+  loadPanel({
+    results: getStatsHTML(),
+    share: false,
+  });
+}
+
 function getStatsHTML() {
   const stats = getAllStats();
-  return `<p>TODO</p><pre style="background-color: black; width: 100%; overflow-x: scroll; height: 30px;">${'stats = ' + JSON.stringify(stats)}</pre>`;
+  let html = `<div>
+<h2>Statistiques</h2>
+  <table class="stats">
+    <tbody>
+      <tr><td>${stats?.games || 0}</td><td>Parties jouées</td></tr>
+      <tr><td>${(stats?.ratio || 0) * 100}</td><td>% de victoire</td></tr>
+      <tr><td>${stats?.streak.current || 0}</td><td>Série de victoires</td></tr>
+      <tr><td>${stats?.streak.max || 0}</td><td>Meilleure série</td></tr>
+      <tr><td>${stats?.words.dofus || 0}</td><td>Mots Dofus utilisés</td></tr>
+      <tr><td>${(stats?.words.ratio || 0) * 100}</td><td>% de mots Dofus</td></tr>
+    </tbody>
+  </table>
+  <h3>Répartition</h3>
+  <table class="stats-table">
+    <tbody>
+      <tr><td>1</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['1'] || 0) * 100}%;">${stats?.results.fixed['1'] || 0}</div></td></tr>
+      <tr><td>2</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['2'] || 0) * 100}%;">${stats?.results.fixed['2'] || 0}</div></td></tr>
+      <tr><td>3</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['3'] || 0) * 100}%;">${stats?.results.fixed['3'] || 0}</div></td></tr>
+      <tr><td>4</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['4'] || 0) * 100}%;">${stats?.results.fixed['4'] || 0}</div></td></tr>
+      <tr><td>5</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['5'] || 0) * 100}%;">${stats?.results.fixed['5'] || 0}</div></td></tr>
+      <tr><td>6</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['6'] || 0) * 100}%;">${stats?.results.fixed['6'] || 0}</div></td></tr>
+      <tr><td>-</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['-'] || 0) * 100}%;">${stats?.results.fixed['-'] || 0}</div></td></tr>
+    </tbody>
+  </table>
+</div>`;
+  return html;
 }

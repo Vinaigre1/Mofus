@@ -163,12 +163,12 @@ function validateWord(gameData) {
   gameData.results[gameData.cursor[0]] = checkWord(gameData.word, entry);
   if (gameData.results[gameData.cursor[0]].indexOf(0) === -1 && gameData.results[gameData.cursor[0]].indexOf(1) === -1) {
     gameData.win = true;
-    loadWinPanel(gameData);
     updateStats(gameData);
+    loadWinPanel(gameData);
   } else if (gameData.cursor[0] + 1 >= MAXIMUM_TRIES) {
     gameData.lose = true;
-    loadLosePanel(gameData);
     updateStats(gameData);
+    loadLosePanel(gameData);
   } else {
     createNewEntry(gameData);
   }
@@ -410,9 +410,11 @@ function getAllStats() {
   if (!storedStats) return;
 
   const totalGames = Object.keys(storedStats.results).reduce((pre, key) => Number(pre) + storedStats.results[key], 0);
+  const totalWin = Object.keys(storedStats.results).reduce((pre, key) => Number(pre) + (key === '-' ? 0 : storedStats.results[key]), 0);
 
   return {
     games: totalGames,
+    ratio: totalWin / totalGames,
     results: {
       fixed: storedStats.results,
       ratios: {

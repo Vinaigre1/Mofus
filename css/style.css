@@ -154,6 +154,21 @@ div.header > * {
   filter: invert(100%) brightness(75%);
 }
 
+.stats-table {
+  border-spacing: 5px;
+}
+
+.stats-bar {
+  width: 200px;
+}
+
+.stats-bar div {
+  background-color: rgb(83, 141, 78);
+  border-radius: 3px;
+  padding: 2px;
+  display: inline-block;
+}
+
 .icon-green,
 .icon-black,
 .icon-yellow,
