@@ -196,25 +196,39 @@ function getStatsHTML() {
   <table class="stats">
     <tbody>
       <tr><td>${stats?.games || 0}</td><td>Parties jouées</td></tr>
-      <tr><td>${(stats?.ratio || 0) * 100}</td><td>% de victoire</td></tr>
+      <tr><td>${Math.floor((stats?.ratio || 0) * 100)}</td><td>% de victoire</td></tr>
       <tr><td>${stats?.streak.current || 0}</td><td>Série de victoires</td></tr>
       <tr><td>${stats?.streak.max || 0}</td><td>Meilleure série</td></tr>
       <tr><td>${stats?.words.dofus || 0}</td><td>Mots Dofus utilisés</td></tr>
-      <tr><td>${(stats?.words.ratio || 0) * 100}</td><td>% de mots Dofus</td></tr>
+      <tr><td>${Math.floor((stats?.words.ratio || 0) * 100)}</td><td>% de mots Dofus</td></tr>
     </tbody>
   </table>
   <h3>Répartition</h3>
   <table class="stats-table">
     <tbody>
-      <tr><td>1</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['1'] || 0) * 100}%;">${stats?.results.fixed['1'] || 0}</div></td></tr>
-      <tr><td>2</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['2'] || 0) * 100}%;">${stats?.results.fixed['2'] || 0}</div></td></tr>
-      <tr><td>3</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['3'] || 0) * 100}%;">${stats?.results.fixed['3'] || 0}</div></td></tr>
-      <tr><td>4</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['4'] || 0) * 100}%;">${stats?.results.fixed['4'] || 0}</div></td></tr>
-      <tr><td>5</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['5'] || 0) * 100}%;">${stats?.results.fixed['5'] || 0}</div></td></tr>
-      <tr><td>6</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['6'] || 0) * 100}%;">${stats?.results.fixed['6'] || 0}</div></td></tr>
-      <tr><td>-</td><td>:</td><td class="stats-bar"><div style="width: ${(stats?.results.ratios['-'] || 0) * 100}%;">${stats?.results.fixed['-'] || 0}</div></td></tr>
+      <tr><td>1</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['1'] || 0) * 100)}%;">${stats?.results.fixed['1'] || 0}</div></td></tr>
+      <tr><td>2</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['2'] || 0) * 100)}%;">${stats?.results.fixed['2'] || 0}</div></td></tr>
+      <tr><td>3</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['3'] || 0) * 100)}%;">${stats?.results.fixed['3'] || 0}</div></td></tr>
+      <tr><td>4</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['4'] || 0) * 100)}%;">${stats?.results.fixed['4'] || 0}</div></td></tr>
+      <tr><td>5</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['5'] || 0) * 100)}%;">${stats?.results.fixed['5'] || 0}</div></td></tr>
+      <tr><td>6</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['6'] || 0) * 100)}%;">${stats?.results.fixed['6'] || 0}</div></td></tr>
+      <tr><td>-</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['-'] || 0) * 100)}%;">${stats?.results.fixed['-'] || 0}</div></td></tr>
     </tbody>
   </table>
 </div>`;
   return html;
+}
+
+/**
+ * Shake the row number `n`
+ * @param {number} n Number of the line to animate
+ */
+function animateShakeRow(n) {
+  const row = document.querySelector(`#grid tr:nth-child(${n})`);
+  if (row.classList.contains('shake')) return;
+
+  row.classList.add('shake');
+  setTimeout(() => {
+    row.classList.remove('shake');
+  }, 600);
 }

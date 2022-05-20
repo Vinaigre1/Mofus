@@ -102,7 +102,7 @@ function loadEvents(gameData) {
     } else if (key === 'backspace') {
       removeLetter(gameData);
     } else if (key === 'enter') {
-      validateWord(gameData);
+      if (!validateWord(gameData)) return;
     }
     loadGrid(gameData);
     updateGame(gameData);
@@ -153,11 +153,17 @@ function removeLetter(gameData) {
  * @param {Data} gameData
  */
 function validateWord(gameData) {
-  if (gameData.cursor[1] < gameData.word.length) return;
+  if (gameData.cursor[1] < gameData.word.length) {
+    animateShakeRow(gameData.cursor[0] + 1);
+    return false;
+  }
 
   const entry = gameData.entries[gameData.cursor[0]].join('').toLowerCase();
   const check = checkDictionary(gameData, entry);
-  if (!check.exists) return;
+  if (!check.exists) {
+    animateShakeRow(gameData.cursor[0] + 1);
+    return false;
+  }
   gameData.entryDict[gameData.cursor[0]] = check.dofus;
 
   gameData.results[gameData.cursor[0]] = checkWord(gameData.word, entry);
@@ -192,6 +198,7 @@ function validateWord(gameData) {
   }
 
   loadKeyboard(gameData, keyColors.correct, keyColors.other, keyColors.wrong);
+  return true;
 }
 
 /**
