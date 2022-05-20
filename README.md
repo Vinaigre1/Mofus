@@ -1,5 +1,5 @@
 # Sufod
-> A Dofus version of Wordle
+> A Dofus version of Wordle.
 
 ## How to play
 
