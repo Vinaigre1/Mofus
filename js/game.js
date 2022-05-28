@@ -266,7 +266,7 @@ function checkWord(_word, entry) {
 function copyResults(gameData) {
   const icons = [ '⬛', '🟨', '🟩' ];
   const dofus = gameData.entryDict.filter(x => x).length;
-  const length = gameData.win ? gameData.cursor[0] : '-';
+  const length = gameData.win ? gameData.cursor[0]+1 : '-';
 
   let str = `SUFOD n°${gameData.number} : ${length}/6\nMots Dofus : ${dofus}\n\n`;
   for (let i = 0; i < gameData.results.length; i++) {
