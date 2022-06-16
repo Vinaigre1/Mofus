@@ -349,7 +349,7 @@ function updateStats(gameData) {
 
   if (game.state !== 'in_progress') return;
 
-  if (numberOfTries >= 1 && numberOfTries <= 6) {
+  if (!gameData.lose && numberOfTries >= 1 && numberOfTries <= 6) {
     stats.results[numberOfTries]++;
     stats.streak++;
     game.state = 'win';

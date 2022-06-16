@@ -32,6 +32,8 @@ function loadKeyboard(gameData, correctLetters = [], otherLetters = [], wrongLet
         letterEl.classList.add('wrong-letter');
       }
       letterEl.addEventListener('click', (event) => {
+        if (gameData.win || gameData.lose) return;
+
         const letter = event.target.dataset.letter;
         if (letter === 'enter') {
           validateWord(gameData);
