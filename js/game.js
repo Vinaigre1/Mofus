@@ -268,7 +268,7 @@ function copyResults(gameData) {
   const dofus = gameData.entryDict.filter(x => x).length;
   const length = gameData.win ? gameData.cursor[0]+1 : '-';
 
-  let str = `SUFOD n°${gameData.number} : ${length}/6\nMots Dofus : ${dofus}\n\n`;
+  let str = `MOFUS n°${gameData.number} : ${length}/6\nMots Dofus : ${dofus}\n\n`;
   for (let i = 0; i < gameData.results.length; i++) {
     for (let j = 0; j < gameData.results[i].length; j++) {
       str += icons[gameData.results[i][j]];
