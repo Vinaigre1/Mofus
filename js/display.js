@@ -192,6 +192,7 @@ function loadStatsPanel() {
 
 function getStatsHTML() {
   const stats = getAllStats();
+  const maxStat = Math.max(...Object.values(stats?.results.ratios)) || 1;
   let html = `<div>
 <h2>Statistiques</h2>
   <table class="stats">
@@ -207,13 +208,13 @@ function getStatsHTML() {
   <h3>Répartition</h3>
   <table class="stats-table">
     <tbody>
-      <tr><td>1</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['1'] || 0) * 100)}%;">${stats?.results.fixed['1'] || 0}</div></td></tr>
-      <tr><td>2</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['2'] || 0) * 100)}%;">${stats?.results.fixed['2'] || 0}</div></td></tr>
-      <tr><td>3</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['3'] || 0) * 100)}%;">${stats?.results.fixed['3'] || 0}</div></td></tr>
-      <tr><td>4</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['4'] || 0) * 100)}%;">${stats?.results.fixed['4'] || 0}</div></td></tr>
-      <tr><td>5</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['5'] || 0) * 100)}%;">${stats?.results.fixed['5'] || 0}</div></td></tr>
-      <tr><td>6</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['6'] || 0) * 100)}%;">${stats?.results.fixed['6'] || 0}</div></td></tr>
-      <tr><td>-</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor((stats?.results.ratios['-'] || 0) * 100)}%;">${stats?.results.fixed['-'] || 0}</div></td></tr>
+      <tr><td>1</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor(((stats?.results.ratios['1'] / maxStat) || 0) * 100)}%;">${stats?.results.fixed['1'] || 0}</div></td></tr>
+      <tr><td>2</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor(((stats?.results.ratios['2'] / maxStat) || 0) * 100)}%;">${stats?.results.fixed['2'] || 0}</div></td></tr>
+      <tr><td>3</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor(((stats?.results.ratios['3'] / maxStat) || 0) * 100)}%;">${stats?.results.fixed['3'] || 0}</div></td></tr>
+      <tr><td>4</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor(((stats?.results.ratios['4'] / maxStat) || 0) * 100)}%;">${stats?.results.fixed['4'] || 0}</div></td></tr>
+      <tr><td>5</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor(((stats?.results.ratios['5'] / maxStat) || 0) * 100)}%;">${stats?.results.fixed['5'] || 0}</div></td></tr>
+      <tr><td>6</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor(((stats?.results.ratios['6'] / maxStat) || 0) * 100)}%;">${stats?.results.fixed['6'] || 0}</div></td></tr>
+      <tr><td>-</td><td>:</td><td class="stats-bar"><div style="width: ${Math.floor(((stats?.results.ratios['-'] / maxStat) || 0) * 100)}%;">${stats?.results.fixed['-'] || 0}</div></td></tr>
     </tbody>
   </table>
 </div>`;
