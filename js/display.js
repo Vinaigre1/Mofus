@@ -1,5 +1,5 @@
 /**
- * Loads the grid with every entry and results
+ * Loads the grid with every entry and results 
  * @param {Data} gameData
  */
 function loadGrid(gameData) {
